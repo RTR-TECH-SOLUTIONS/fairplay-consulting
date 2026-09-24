@@ -1,0 +1,27 @@
+---
+import { site, u } from "../data/site";
+
+interface Props {
+  light?: boolean;
+  /** desenează semnul la încărcare (doar pe prima pagină, ca să nu se repete la fiecare click) */
+  animat?: boolean;
+}
+
+const { light = false, animat = false } = Astro.props;
+const linie = light ? "#f3efe6" : "#101c2c";
+---
+
+<a href={u("/")} class="group flex items-center gap-3" aria-label={`${site.numeComplet}, prima pagină`}>
+  <!-- semnul: litera F desenată ca parcelele unui plan cadastral; pătratul de alamă e parcela marcată -->
+  <svg viewBox="0 0 48 48" fill="none" class:list={["h-10 w-10 shrink-0", animat && "semn-animat"]} aria-hidden="true">
+    <rect class="ln" pathLength="100" x="1.1" y="1.1" width="45.8" height="45.8" stroke={linie} stroke-width="2.2"></rect>
+    <path class="ln" pathLength="100" d="M14 1.1V46.9M14 13H46.9M14 25H36" stroke={linie} stroke-width="2.2"></path>
+    <rect class="sq" x="36" y="36" width="10.9" height="10.9" fill="#c9a45c"></rect>
+  </svg>
+  <span class="flex flex-col leading-none">
+    <span class:list={["font-serif text-[1.5rem] font-medium tracking-tight", light ? "text-white" : "text-ink"]}
+      >{site.nume}</span
+    >
+    <span class:list={["mt-1 text-[0.8rem]", light ? "text-mist" : "text-ink-soft"]}>{site.descriere}</span>
+  </span>
+</a>

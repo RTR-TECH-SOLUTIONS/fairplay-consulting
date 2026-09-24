@@ -1,0 +1,70 @@
+---
+import Logo from "./Logo.astro";
+import { site, nav, dialogHref, telLink, waLink, u } from "../data/site";
+
+const an = new Date().getFullYear();
+---
+
+<footer class="bg-navy-950 text-mist">
+  <div class="wrap grid gap-12 py-16 md:grid-cols-2 md:py-20 lg:grid-cols-12">
+    <div class="lg:col-span-4">
+      <Logo light />
+      <p class="mt-6 max-w-[34ch] text-[0.95rem] leading-relaxed">
+        Consultanță pentru finanțarea afacerilor și valorificarea proprietăților, din {site.oras},
+        județul {site.judet}.
+      </p>
+      <a href={dialogHref} class="btn btn-gold mt-7">Începe dialogul</a>
+    </div>
+
+    <div class="lg:col-span-2 lg:col-start-5">
+      <h2 class="font-sans text-[0.95rem] font-semibold text-white">Site</h2>
+      <ul class="mt-4 space-y-2.5 text-[0.95rem]">
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} class="transition-colors hover:text-white">
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+        <li><a href={dialogHref} class="transition-colors hover:text-white">Dialog cu un consultant</a></li>
+      </ul>
+    </div>
+
+    <div class="lg:col-span-3">
+      <h2 class="font-sans text-[0.95rem] font-semibold text-white">Servicii</h2>
+      <ul class="mt-4 space-y-2.5 text-[0.95rem]">
+        <li><a href={u("/servicii#finantare")} class="transition-colors hover:text-white">Finanțare pentru idei și afaceri</a></li>
+        <li><a href={u("/servicii#valorificare")} class="transition-colors hover:text-white">Valorificarea proprietăților</a></li>
+        <li><a href={u("/surse-de-finantare")} class="transition-colors hover:text-white">Surse de finanțare 2026</a></li>
+        <li><a href={u("/proiecte")} class="transition-colors hover:text-white">Proiecte de succes</a></li>
+      </ul>
+    </div>
+
+    <div class="lg:col-span-3">
+      <h2 class="font-sans text-[0.95rem] font-semibold text-white">Contact</h2>
+      <address class="mt-4 space-y-2.5 text-[0.95rem] not-italic">
+        <p>{site.adresa}</p>
+        <p><a href={telLink} class="transition-colors hover:text-white">{site.telefonAfisat}</a></p>
+        <p><a href={`mailto:${site.email}`} class="transition-colors hover:text-white">{site.email}</a></p>
+        <p>
+          <a
+            href={waLink("Bună ziua, aș dori să discut cu un consultant Fairplay.")}
+            target="_blank"
+            rel="noopener"
+            class="link-u transition-colors hover:text-white">Scrie-ne pe WhatsApp</a
+          >
+        </p>
+      </address>
+    </div>
+  </div>
+
+  <div class="border-t border-white/10">
+    <div class="wrap flex flex-col gap-2 py-6 text-[0.85rem] md:flex-row md:items-center md:justify-between">
+      <p>&copy; {an} {site.numeComplet}</p>
+      <!-- TODO(real): CUI, nr. Registrul Comerțului, linkuri legale (Termeni, Confidențialitate, Cookies) și creditul RTR -->
+      <p>CUI și nr. de înregistrare, la publicare</p>
+    </div>
+  </div>
+</footer>

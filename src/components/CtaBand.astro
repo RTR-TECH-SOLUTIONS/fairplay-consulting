@@ -1,0 +1,35 @@
+---
+import IconWhatsapp from "./IconWhatsapp.astro";
+import { dialogHref, waLink } from "../data/site";
+
+interface Props {
+  titlu?: string;
+  text?: string;
+}
+
+const {
+  titlu = "Spune-ne ce ai în minte.",
+  text = "Completezi câteva întrebări, primești o fișă cu ce ne-ai spus și un consultant îți răspunde în scris în cel mult două zile lucrătoare.",
+} = Astro.props;
+---
+
+<section class="border-y border-line bg-stone-50">
+  <div class="wrap grid items-center gap-8 py-16 md:grid-cols-12 md:py-20">
+    <div class="md:col-span-7">
+      <h2 class="h2">{titlu}</h2>
+      <p class="lead mt-4 max-w-[52ch]">{text}</p>
+    </div>
+    <div class="flex flex-wrap gap-3 md:col-span-5 md:justify-end">
+      <a href={dialogHref} class="btn btn-primary">Începe dialogul</a>
+      <a
+        href={waLink("Bună ziua, aș dori să discut cu un consultant Fairplay.")}
+        target="_blank"
+        rel="noopener"
+        class="btn btn-ghost"
+      >
+        <IconWhatsapp />
+        WhatsApp
+      </a>
+    </div>
+  </div>
+</section>

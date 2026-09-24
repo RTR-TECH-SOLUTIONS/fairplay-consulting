@@ -1,0 +1,137 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { surse, tipuri, profiluri } from "../data/surse";
+
+const chip =
+  "inline-flex items-center rounded-[8px] border px-4 py-2 text-[0.93rem] transition-colors aria-pressed:border-navy-900 aria-pressed:bg-navy-900 aria-pressed:text-white border-line bg-paper hover:border-mist";
+---
+
+<Layout
+  title="Surse de finanțare 2026 pentru afaceri și proprietăți | Fairplay"
+  description="Fonduri europene, Start-Up Nation, AFIR, credit cu garanție de stat, leasing, investitori privați și căi de valorificare pentru terenuri și clădiri. Filtrează după situația ta."
+>
+  <PageHero
+    pagina="Surse de finanțare"
+    titlu="Surse de finanțare 2026"
+    text="De unde pot veni banii pentru proiectul tău și ce poți face cu o proprietate. Alege ce te descrie și lista se restrânge."
+    imagine="/images/calculator.webp"
+  />
+
+  <section class="py-14 md:py-20">
+    <div class="wrap">
+      <div class="flex flex-col gap-6 border-b border-line pb-8 lg:flex-row lg:items-end lg:justify-between">
+        <div class="grid gap-5">
+          <div role="group" aria-labelledby="f-profil">
+            <p id="f-profil" class="text-[0.9rem] font-semibold">Situația ta</p>
+            <div class="mt-2.5 flex flex-wrap gap-2">
+              <button type="button" class={chip} data-filtru="profil" data-val="" aria-pressed="true">Toate</button>
+              {
+                Object.entries(profiluri).map(([k, v]) => (
+                  <button type="button" class={chip} data-filtru="profil" data-val={k} aria-pressed="false">
+                    {v}
+                  </button>
+                ))
+              }
+            </div>
+          </div>
+          <div role="group" aria-labelledby="f-tip">
+            <p id="f-tip" class="text-[0.9rem] font-semibold">Tipul sursei</p>
+            <div class="mt-2.5 flex flex-wrap gap-2">
+              <button type="button" class={chip} data-filtru="tip" data-val="" aria-pressed="true">Toate</button>
+              {
+                Object.entries(tipuri).map(([k, v]) => (
+                  <button type="button" class={chip} data-filtru="tip" data-val={k} aria-pressed="false">
+                    {v}
+                  </button>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+        <p class="text-[0.95rem] text-ink-soft" aria-live="polite"><span id="nr-rezultate">{surse.length}</span> surse afișate</p>
+      </div>
+
+      <ul id="lista-surse" class="divide-y divide-line">
+        {
+          surse.map((s) => (
+            <li data-tip={s.tip} data-profil={s.profil.join(" ")} class="grid gap-4 py-8 lg:grid-cols-12 lg:gap-8">
+              <div class="lg:col-span-4">
+                <p class="flex items-center gap-2 text-[0.88rem] font-medium text-gold-ink">
+                  <span class="h-1.5 w-1.5 rounded-full bg-gold" aria-hidden="true" />
+                  {tipuri[s.tip]}
+                </p>
+                <h2 class="mt-2 font-serif text-[1.5rem] leading-snug">{s.nume}</h2>
+              </div>
+              <dl class="grid gap-4 text-[0.98rem] sm:grid-cols-3 lg:col-span-8">
+                <div>
+                  <dt class="text-[0.86rem] text-ink-soft">Pentru cine</dt>
+                  <dd class="mt-1">{s.pentruCine}</dd>
+                </div>
+                <div>
+                  <dt class="text-[0.86rem] text-ink-soft">Ce obții</dt>
+                  <dd class="mt-1">{s.ceFinanteaza}</dd>
+                </div>
+                <div>
+                  <dt class="text-[0.86rem] text-ink-soft">Cum te ajutăm</dt>
+                  <dd class="mt-1">{s.cumAjutam}</dd>
+                </div>
+              </dl>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div id="fara-rezultate" hidden class="rounded-[12px] border border-line bg-stone-50 p-8 text-center">
+        <p class="font-serif text-[1.35rem]">Nicio sursă pentru combinația asta.</p>
+        <p class="mt-2 text-ink-soft">Nu înseamnă că nu există. Spune-ne situația ta și căutăm noi.</p>
+        <button type="button" id="reset-filtre" class="btn btn-ghost mt-5">Arată toate sursele</button>
+      </div>
+
+      <p class="mt-10 max-w-[70ch] border-l-2 border-gold pl-4 text-[0.95rem] text-ink-soft">
+        Calendarul apelurilor și sumele se schimbă de la o sesiune la alta. La discuția inițială îți spunem ce e deschis
+        acum, ce se deschide în lunile următoare și pentru ce merită să te pregătești din timp.
+      </p>
+    </div>
+  </section>
+
+  <CtaBand
+    titlu="Nu știi ce sursă ți se potrivește?"
+    text="E cea mai frecventă întrebare. Descrie-ne pe scurt ce ai și primești, gratuit, o fișă de eligibilitate cu variantele reale."
+  />
+</Layout>
+
+<script>
+  const stare: Record<string, string> = { profil: "", tip: "" };
+  const butoane = [...document.querySelectorAll<HTMLButtonElement>("[data-filtru]")];
+  const randuri = [...document.querySelectorAll<HTMLElement>("#lista-surse > li")];
+  const nr = document.getElementById("nr-rezultate")!;
+  const gol = document.getElementById("fara-rezultate")!;
+
+  function aplica() {
+    let vizibile = 0;
+    for (const r of randuri) {
+      const ok =
+        (!stare.profil || r.dataset.profil!.split(" ").includes(stare.profil)) && (!stare.tip || r.dataset.tip === stare.tip);
+      r.hidden = !ok;
+      if (ok) vizibile++;
+    }
+    nr.textContent = String(vizibile);
+    gol.hidden = vizibile > 0;
+    for (const b of butoane) b.setAttribute("aria-pressed", String(stare[b.dataset.filtru!] === b.dataset.val));
+  }
+
+  for (const b of butoane) {
+    b.addEventListener("click", () => {
+      stare[b.dataset.filtru!] = b.dataset.val!;
+      aplica();
+    });
+  }
+
+  document.getElementById("reset-filtre")!.addEventListener("click", () => {
+    stare.profil = "";
+    stare.tip = "";
+    aplica();
+  });
+</script>

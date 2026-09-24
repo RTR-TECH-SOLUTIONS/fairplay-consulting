@@ -1,0 +1,19 @@
+---
+import { site, telLink } from "../data/site";
+---
+
+<div class="hidden bg-navy-950 text-[0.84rem] text-mist md:block">
+  <div class="wrap flex h-10 items-center justify-between gap-6">
+    <p class="flex items-center gap-2">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"
+        ><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg
+      >
+      {site.adresa}
+    </p>
+    <div class="flex items-center gap-6">
+      <span>{site.program[0].zi}, {site.program[0].ore}</span>
+      <a href={telLink} class="transition-colors hover:text-white">{site.telefonAfisat}</a>
+      <a href={`mailto:${site.email}`} class="transition-colors hover:text-white">{site.email}</a>
+    </div>
+  </div>
+</div>

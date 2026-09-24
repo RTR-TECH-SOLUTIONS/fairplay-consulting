@@ -1,0 +1,38 @@
+---
+import { u } from "../data/site";
+
+interface Props {
+  titlu: string;
+  text: string;
+  imagine?: string;
+  pagina: string;
+}
+
+const { titlu, text, imagine, pagina } = Astro.props;
+---
+
+<section class="relative isolate overflow-hidden bg-navy-900 text-white">
+  {
+    imagine && (
+      <img
+        src={u(imagine)}
+        alt=""
+        width="1600"
+        height="900"
+        class="absolute inset-0 -z-10 h-full w-full object-cover opacity-30"
+        fetchpriority="high"
+      />
+    )
+  }
+  <div class="absolute inset-0 -z-10 bg-gradient-to-r from-navy-950/90 via-navy-900/80 to-navy-900/40" aria-hidden="true"></div>
+  <div class="wrap py-16 md:py-24">
+    <nav aria-label="Breadcrumb" class="text-[0.88rem] text-mist">
+      <a href={u("/")} class="transition-colors hover:text-white">Acasă</a>
+      <span class="mx-2" aria-hidden="true">/</span>
+      <span aria-current="page" class="text-white">{pagina}</span>
+    </nav>
+    <h1 class="h1 mt-5 max-w-[18ch]">{titlu}</h1>
+    <p class="mt-5 max-w-[56ch] text-[1.12rem] leading-relaxed text-mist md:text-[1.2rem]">{text}</p>
+    <slot />
+  </div>
+</section>

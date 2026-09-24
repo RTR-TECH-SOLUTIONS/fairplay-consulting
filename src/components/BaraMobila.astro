@@ -1,0 +1,17 @@
+---
+import IconPhone from "./IconPhone.astro";
+import { dialogHref, telLink } from "../data/site";
+---
+
+<div
+  class="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-paper/95 backdrop-blur md:hidden"
+  style="padding-bottom: env(safe-area-inset-bottom, 0px)"
+>
+  <div class="grid grid-cols-[1fr_auto] gap-2 px-4 py-2.5">
+    <a class="btn btn-primary w-full" href={dialogHref}>Începe dialogul</a>
+    <a class="btn btn-ghost bg-paper px-5" href={telLink}>
+      <IconPhone />
+      Sună
+    </a>
+  </div>
+</div>

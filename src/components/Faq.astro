@@ -1,0 +1,42 @@
+---
+import { faq } from "../data/faq";
+
+interface Props {
+  titlu?: string;
+}
+
+const { titlu = "Întrebări frecvente" } = Astro.props;
+---
+
+<section class="bg-navy-900 py-20 text-white md:py-28" aria-labelledby="faq-titlu">
+  <div class="wrap grid gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-4">
+      <span class="rule-gold"></span>
+      <h2 id="faq-titlu" class="h2 mt-6">{titlu}</h2>
+      <p class="mt-5 max-w-[34ch] text-mist">
+        Ce ne întreabă aproape toți clienții la prima discuție. Dacă nu găsești răspunsul aici, întreabă-ne direct.
+      </p>
+    </div>
+
+    <div class="lg:col-span-8">
+      {
+        faq.map((item, i) => (
+          <details class="group border-b border-white/12 first:border-t" open={i === 0}>
+            <summary class="flex cursor-pointer list-none items-start justify-between gap-6 py-5 text-[1.08rem] font-medium marker:hidden [&::-webkit-details-marker]:hidden">
+              <span>{item.q}</span>
+              <span
+                class="mt-1 grid h-6 w-6 shrink-0 place-items-center rounded-full border border-gold/60 text-gold transition-transform duration-200 group-open:rotate-45"
+                aria-hidden="true"
+              >
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                  <path d="M5 0v10M0 5h10" stroke="currentColor" stroke-width="1.5" />
+                </svg>
+              </span>
+            </summary>
+            <p class="max-w-[62ch] pb-6 text-mist">{item.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>

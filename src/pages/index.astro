@@ -1,0 +1,469 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Faq from "../components/Faq.astro";
+import IconWhatsapp from "../components/IconWhatsapp.astro";
+import IconPhone from "../components/IconPhone.astro";
+import { site, dialogHref, telLink, waLink, u } from "../data/site";
+import { proiecte } from "../data/proiecte";
+
+const ani = new Date().getFullYear() - site.anInfiintare;
+
+const trasee = [
+  {
+    href: `${dialogHref}?traseu=idee`,
+    img: "/images/dosar-buget.webp",
+    w: 1600,
+    h: 900,
+    alt: "Planificator cu tabele de buget și un stilou auriu pe un birou gri",
+    titlu: "Am o idee de afacere și caut finanțare",
+    text: "Fonduri europene, programe guvernamentale, credit bancar sau investitori privați. Îți spunem ce se potrivește, cât trebuie să pui de la tine și ce șanse reale ai.",
+    link: "Pornește de la idee",
+  },
+  {
+    href: `${dialogHref}?traseu=proprietate`,
+    img: "/images/macheta.webp",
+    w: 1600,
+    h: 1067,
+    alt: "Machetă de arhitectură din lemn și carton, cu clădiri joase și copaci",
+    titlu: "Am o proprietate sau un bun de pus în valoare",
+    text: "Teren, clădire, hală, utilaje. Verificăm actele, estimăm valoarea și îți propunem varianta care aduce cel mai mult: vânzare, închiriere sau asociere.",
+    link: "Pornește de la proprietate",
+  },
+];
+
+// TODO(real): istoric scris ca exemplu de ton; anii și reperele se confirmă cu clientul.
+const istoric = [
+  { an: "2010", text: "Firma se înființează la Florești, cu activitate în dezvoltare imobiliară." },
+  { an: "2013", text: "Primele dosare pentru clienți: două pensiuni din Munții Apuseni, pe fonduri pentru turism rural." },
+  { an: "2017", text: "Lucrăm constant cu evaluatori ANEVAR, notari și topografi din Cluj pentru valorificarea terenurilor." },
+  { an: "2021", text: "Trecem pe noul cadru de finanțare 2021–2027 și pe Programul Regional Nord-Vest." },
+  { an: "2026", text: `${site.dosareDepuse} dosare depuse și proprietăți valorificate în tot județul Cluj.` },
+];
+
+const servicii = [
+  {
+    id: "finantare",
+    titlu: "Pentru idei și afaceri",
+    items: [
+      "identificăm programul sau sursa potrivită: nerambursabil, credit sau investitor",
+      "verificăm eligibilitatea înainte să cheltuiești ceva",
+      "scriem planul de afaceri și bugetul proiectului",
+      "pregătim și depunem cererea de finanțare",
+      "te asistăm la contract, la achiziții și la cererile de plată",
+      "facem raportările din perioada de monitorizare",
+    ],
+  },
+  {
+    id: "valorificare",
+    titlu: "Pentru proprietăți și bunuri",
+    items: [
+      "verificăm situația juridică: carte funciară, cadastru, sarcini",
+      "estimăm valoarea, cu evaluator autorizat ANEVAR când e nevoie",
+      "comparăm variantele: vânzare, închiriere, asociere, garanție",
+      "pregătim dosarul de prezentare pentru cumpărători și investitori",
+      "negociem și coordonăm partea notarială",
+      "folosim proprietatea ca aport sau garanție într-un proiect finanțat",
+    ],
+  },
+];
+
+const pasi = [
+  { titlu: "Discuția inițială", text: "Ne spui ce ai: o idee, o firmă, un teren. Durează jumătate de oră, la birou sau la telefon, și nu costă nimic." },
+  { titlu: "Fișa de eligibilitate", text: "În 3–5 zile lucrătoare primești în scris ce surse se potrivesc, ce acte lipsesc și ce șanse reale ai." },
+  { titlu: "Dosarul", text: "Scriem planul de afaceri sau planul de valorificare, bugetul și toate anexele cerute de finanțator." },
+  { titlu: "Depunere și negociere", text: "Depunem la finanțator sau stăm la masă cu cumpărătorii și investitorii. Ești la curent la fiecare pas." },
+  { titlu: "Implementare", text: "După aprobare, te ajutăm cu achizițiile, cererile de plată și raportările, până la ultima zi de monitorizare." },
+];
+
+const hartaSrc = (() => {
+  const { lat, lon } = site.harta;
+  const d = 0.018;
+  return `https://www.openstreetmap.org/export/embed.html?bbox=${lon - d * 1.6}%2C${lat - d}%2C${lon + d * 1.6}%2C${lat + d}&layer=mapnik&marker=${lat}%2C${lon}`;
+})();
+---
+
+<Layout
+  title="Fairplay Business Consulting | Finanțare pentru afaceri și valorificarea proprietăților, Cluj"
+  description="Consultanță din Florești, Cluj: fonduri europene, credite și investitori pentru idei de afaceri, plus valorificarea terenurilor, clădirilor și bunurilor nefolosite."
+>
+  <!-- Hero -->
+  <section class="relative isolate overflow-hidden bg-navy-950 text-white">
+    <img
+      src={u("/images/hero-cluj.webp")}
+      alt=""
+      width="2400"
+      height="1579"
+      class="absolute inset-0 -z-10 h-full w-full object-cover object-[center_40%]"
+      fetchpriority="high"
+    />
+    <!-- aceeași panoramă, animată (Higgsfield, Seedance 2.0 Mini): nori care trec, apropiere lentă.
+         Pornește doar dacă vizitatorul nu a cerut mișcare redusă. -->
+    <video
+      id="hero-video"
+      class="absolute inset-0 -z-10 h-full w-full object-cover object-[center_40%] opacity-0 transition-opacity duration-700 ease-out"
+      muted
+      loop
+      playsinline
+      preload="none"
+      poster={u("/images/hero-cluj.webp")}
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <source src={u("/video/hero-cluj.webm")} type="video/webm" />
+      <source src={u("/video/hero-cluj.mp4")} type="video/mp4" />
+    </video>
+    <div
+      class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(10_18_30/0.72)_0%,rgb(10_18_30/0.55)_45%,rgb(10_18_30/0.9)_100%)]"
+      aria-hidden="true"
+    >
+    </div>
+    <button
+      type="button"
+      id="hero-video-buton"
+      hidden
+      class="absolute right-4 top-4 z-10 inline-flex h-9 min-w-9 items-center justify-center gap-2 rounded-[8px] border border-white/25 bg-navy-950/40 px-2.5 text-[0.8rem] text-white/80 backdrop-blur transition-colors hover:border-white/60 hover:text-white md:bottom-48 md:right-8 md:top-auto md:px-3"
+      aria-pressed="false"
+    >
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true" data-icon="pauza"><rect x="1" y="1" width="3" height="8"></rect><rect x="6" y="1" width="3" height="8"></rect></svg>
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true" data-icon="play" hidden><path d="M2 1l7 4-7 4z"></path></svg>
+      <span class="sr-only md:not-sr-only">Oprește animația</span>
+    </button>
+    <div class="hero-intra wrap flex min-h-[min(88svh,760px)] flex-col items-center justify-center pb-44 pt-20 text-center md:pb-52">
+      <p class="flex items-center gap-3 text-[0.95rem] text-gold-300">
+        <span class="hidden h-px w-8 bg-gold sm:block" aria-hidden="true"></span>
+        Consultanță de afaceri din {site.oras}, {site.judet}
+        <span class="hidden h-px w-8 bg-gold sm:block" aria-hidden="true"></span>
+      </p>
+      <h1 class="h1 mt-6 max-w-[17ch]">
+        Finanțare pentru ideea ta. <em class="font-light text-gold-300">Valoare</em> pentru ce deții deja.
+      </h1>
+      <p class="mt-6 max-w-[58ch] text-pretty text-[1.1rem] leading-relaxed text-white/85 md:text-[1.22rem]">
+        Căutăm sursa potrivită de bani pentru proiectul tău și cel mai bun drum pentru terenuri, clădiri și bunuri
+        care stau nefolosite. De {ani} ani, în județul Cluj.
+      </p>
+      <div class="mt-9 flex flex-wrap justify-center gap-3">
+        <a href={dialogHref} class="btn btn-gold">
+          Începe dialogul
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"
+            ><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6"></path></svg
+          >
+        </a>
+        <a href={u("/surse-de-finantare")} class="btn btn-ghost-light">Surse de finanțare 2026</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cele două trasee -->
+  <section aria-label="Cu ce vii la noi" class="relative z-10 -mt-32 md:-mt-40">
+    <div class="wrap grid gap-5 md:grid-cols-2 md:gap-6">
+      {
+        trasee.map((t) => (
+          <a href={t.href} class="card group flex flex-col overflow-hidden transition-shadow duration-200 hover:shadow-[0_2px_4px_rgb(16_28_44/0.06),0_20px_40px_-16px_rgb(16_28_44/0.28)]">
+            <div class="aspect-[16/8] overflow-hidden bg-stone-100">
+              <img
+                src={u(t.img)}
+                alt={t.alt}
+                width={t.w}
+                height={t.h}
+                loading="lazy"
+                class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+              />
+            </div>
+            <div class="flex flex-1 flex-col p-6 md:p-8">
+              <h2 class="h3">{t.titlu}</h2>
+              <p class="mt-3 text-ink-soft">{t.text}</p>
+              <span class="mt-6 inline-flex items-center gap-2 font-semibold text-navy-900">
+                {t.link}
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" class="transition-transform duration-200 group-hover:translate-x-1">
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" />
+                </svg>
+              </span>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Despre + cifre -->
+  <section class="py-20 md:py-28" aria-labelledby="despre-titlu">
+    <div class="wrap">
+      <div class="card grid gap-10 border-t-2 border-t-gold p-7 md:p-12 lg:grid-cols-12 lg:gap-12">
+        <div class="lg:col-span-6">
+          <h2 id="despre-titlu" class="h2">Punem la aceeași masă ideea, banii și proprietatea</h2>
+          <p class="mt-6 text-ink-soft">
+            {site.numeComplet} a pornit în {site.anInfiintare} la Florești, din dezvoltare imobiliară. Acolo am învățat
+            cât contează un dosar făcut corect: un extras de carte funciară la zi, un buget realist, un plan pe care îl
+            înțeleg și banca, și investitorul.
+          </p>
+          <p class="mt-4 text-ink-soft">
+            Astăzi facem asta pentru alții. Unii vin cu o idee și caută bani. Alții au un teren sau o clădire și nu
+            știu ce să facă cu ele. Cei mai buni clienți ai noștri au venit cu amândouă.
+          </p>
+        </div>
+        <dl class="grid content-center gap-8 sm:grid-cols-3 sm:gap-0 lg:col-span-6">
+          <div class="flex flex-col gap-2 sm:border-r sm:border-line sm:px-6 sm:text-center">
+            <dt class="text-[0.92rem] text-ink-soft">ani de activitate</dt>
+            <dd class="num order-first whitespace-nowrap text-[clamp(2.3rem,1.9rem+1vw,2.8rem)] leading-none text-navy-900">{ani}</dd>
+          </div>
+          <div class="flex flex-col gap-2 sm:border-r sm:border-line sm:px-6 sm:text-center">
+            <dt class="text-[0.92rem] text-ink-soft">dosare depuse</dt>
+            <dd class="num order-first whitespace-nowrap text-[clamp(2.3rem,1.9rem+1vw,2.8rem)] leading-none text-navy-900">{site.dosareDepuse}</dd>
+          </div>
+          <div class="flex flex-col gap-2 sm:px-6 sm:text-center">
+            <dt class="text-[0.92rem] text-ink-soft">finanțări și tranzacții</dt>
+            <dd class="num order-first whitespace-nowrap text-[clamp(2.3rem,1.9rem+1vw,2.8rem)] leading-none text-navy-900">{site.valoareAtrasa}</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- Istoric -->
+  <section class="bg-stone-50 py-20 md:py-28" aria-labelledby="istoric-titlu">
+    <div class="wrap">
+      <div class="grid gap-6 md:grid-cols-12 md:items-end">
+        <div class="md:col-span-6">
+          <span class="rule-gold"></span>
+          <h2 id="istoric-titlu" class="h2 mt-6">Istoric</h2>
+        </div>
+        <p class="lead md:col-span-6">
+          Nu am început ca firmă de consultanță. Am început cu propriile terenuri și propriile dosare, și de acolo vine
+          felul în care lucrăm.
+        </p>
+      </div>
+
+      <ol class="mt-14 grid gap-0 md:grid-cols-5">
+        {
+          istoric.map((r) => (
+            <li class="relative border-l border-line pb-10 pl-7 md:border-l-0 md:border-t md:pb-0 md:pl-0 md:pr-6 md:pt-8">
+              <span class="absolute -left-[5px] top-1 h-[9px] w-[9px] rounded-full bg-gold md:-top-[5px] md:left-0" aria-hidden="true" />
+              <p class="num text-[2.2rem] leading-none text-gold-ink">{r.an}</p>
+              <p class="mt-3 text-[0.98rem] text-ink-soft">{r.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Ce facem -->
+  <section class="py-20 md:py-28" aria-labelledby="servicii-titlu">
+    <div class="wrap">
+      <div class="max-w-2xl">
+        <span class="rule-gold"></span>
+        <h2 id="servicii-titlu" class="h2 mt-6">Ce facem, concret</h2>
+        <p class="lead mt-5">
+          Două tipuri de clienți, același principiu: nu începem nimic până nu știm, în scris, că merită.
+        </p>
+      </div>
+
+      <div class="mt-12 grid gap-6 lg:grid-cols-2">
+        {
+          servicii.map((s) => (
+            <div class="rounded-[12px] border border-line border-l-[3px] border-l-gold bg-stone-50 p-7 md:p-10">
+              <h3 class="h3">{s.titlu}</h3>
+              <ul class="check-list mt-6 text-ink-soft">
+                {s.items.map((i) => (
+                  <li>{i}</li>
+                ))}
+              </ul>
+              <a href={u(`/servicii#${s.id}`)} class="link-u mt-8 inline-block font-semibold text-navy-900">
+                Detalii despre servicii
+              </a>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Proiecte de succes -->
+  <section class="border-t border-line py-20 md:py-28" aria-labelledby="proiecte-titlu">
+    <div class="wrap">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <div class="max-w-2xl">
+          <span class="rule-gold"></span>
+          <h2 id="proiecte-titlu" class="h2 mt-6">Proiecte de succes</h2>
+          <p class="lead mt-5">Câteva dintre dosarele din ultimii ani. Beneficiarii apar cu acordul lor, fără nume.</p>
+        </div>
+        <a href={u("/proiecte")} class="btn btn-ghost">Toate proiectele</a>
+      </div>
+
+      <div class="mt-12 overflow-hidden rounded-[12px] border border-line">
+        <table class="w-full text-left text-[0.97rem]">
+          <caption class="sr-only">Proiecte finalizate sau în lucru</caption>
+          <thead class="hidden bg-stone-50 text-[0.88rem] text-ink-soft md:table-header-group">
+            <tr>
+              <th scope="col" class="px-6 py-4 font-medium">Proiect</th>
+              <th scope="col" class="px-6 py-4 font-medium">Sursă sau soluție</th>
+              <th scope="col" class="px-6 py-4 font-medium">Rezultat</th>
+              <th scope="col" class="px-6 py-4 font-medium">An</th>
+              <th scope="col" class="px-6 py-4 font-medium">Stadiu</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-line">
+            {
+              proiecte.slice(0, 5).map((p) => (
+                <tr class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 px-5 py-5 md:table-row md:p-0">
+                  <th scope="row" class="col-span-2 font-normal md:px-6 md:py-5">
+                    <span class="block font-serif text-[1.18rem] text-ink">{p.titlu}</span>
+                    <span class="text-[0.9rem] text-ink-soft">{p.localitate}</span>
+                  </th>
+                  <td class="col-span-2 text-ink-soft md:px-6 md:py-5">{p.sursa}</td>
+                  <td class="col-span-2 font-medium text-ink md:px-6 md:py-5">{p.rezultat}</td>
+                  <td class="num text-ink-soft md:px-6 md:py-5">{p.an}</td>
+                  <td class="md:px-6 md:py-5">
+                    <span class="inline-flex items-center gap-2 text-[0.92rem] text-ink-soft">
+                      <span class:list={["h-1.5 w-1.5 rounded-full", p.stadiu.startsWith("În") ? "bg-mist" : "bg-gold"]} aria-hidden="true" />
+                      {p.stadiu}
+                    </span>
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pas cu pas -->
+  <section class="bg-stone-50 py-20 md:py-28" aria-labelledby="pasi-titlu">
+    <div class="wrap grid gap-12 lg:grid-cols-12">
+      <div class="lg:col-span-4">
+        <div class="lg:sticky lg:top-32">
+          <span class="rule-gold"></span>
+          <h2 id="pasi-titlu" class="h2 mt-6">Cum lucrăm, pas cu pas</h2>
+          <p class="lead mt-5">Știi de la început ce urmează, cât durează și cât costă.</p>
+          <img
+            src={u("/images/stilou-caiet.webp")}
+            alt="Stilou pe un caiet cu spirală, pe o masă de lemn"
+            width="1200"
+            height="901"
+            loading="lazy"
+            class="mt-10 hidden aspect-[4/3] w-full rounded-[12px] object-cover lg:block"
+          />
+        </div>
+      </div>
+      <ol class="lg:col-span-7 lg:col-start-6">
+        {
+          pasi.map((p, i) => (
+            <li class="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-line py-8 first:pt-0 last:border-0 md:grid-cols-[5rem_1fr]">
+              <span class="num text-[2.6rem] leading-none text-gold-ink md:text-[3.2rem]">{String(i + 1).padStart(2, "0")}</span>
+              <div>
+                <h3 class="h3">{p.titlu}</h3>
+                <p class="mt-2 text-ink-soft">{p.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <Faq />
+
+  <!-- Date de contact -->
+  <section id="contact" class="py-20 md:py-28" aria-labelledby="contact-titlu">
+    <div class="wrap grid gap-12 lg:grid-cols-12">
+      <div class="lg:col-span-5">
+        <span class="rule-gold"></span>
+        <h2 id="contact-titlu" class="h2 mt-6">Date de contact</h2>
+        <p class="lead mt-5">
+          Vino la birou, sună-ne sau începe dialogul online. Îți răspundem în cel mult două zile lucrătoare.
+        </p>
+
+        <dl class="mt-10 grid gap-6 text-[1rem]">
+          <div class="grid grid-cols-[7rem_1fr] gap-4 border-b border-line pb-6">
+            <dt class="text-ink-soft">Adresă</dt>
+            <dd>{site.adresa}</dd>
+          </div>
+          <div class="grid grid-cols-[7rem_1fr] gap-4 border-b border-line pb-6">
+            <dt class="text-ink-soft">Telefon</dt>
+            <dd><a href={telLink} class="link-u">{site.telefonAfisat}</a></dd>
+          </div>
+          <div class="grid grid-cols-[7rem_1fr] gap-4 border-b border-line pb-6">
+            <dt class="text-ink-soft">E-mail</dt>
+            <dd><a href={`mailto:${site.email}`} class="link-u break-all">{site.email}</a></dd>
+          </div>
+          <div class="grid grid-cols-[7rem_1fr] gap-4">
+            <dt class="text-ink-soft">Program</dt>
+            <dd>
+              {
+                site.program.map((p) => (
+                  <p>
+                    {p.zi}: {p.ore}
+                  </p>
+                ))
+              }
+            </dd>
+          </div>
+        </dl>
+
+        <div class="mt-10 flex flex-wrap gap-3">
+          <a href={dialogHref} class="btn btn-primary">Începe dialogul</a>
+          <a href={waLink("Bună ziua, aș dori să discut cu un consultant Fairplay.")} target="_blank" rel="noopener" class="btn btn-ghost">
+            <IconWhatsapp />
+            WhatsApp
+          </a>
+          <a href={telLink} class="btn btn-ghost">
+            <IconPhone />
+            Sună
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-6 lg:col-start-7">
+        <div class="overflow-hidden rounded-[12px] border border-line bg-stone-100">
+          <iframe
+            title={`Harta: ${site.oras}, județul ${site.judet}`}
+            src={hartaSrc}
+            width="800"
+            height="600"
+            loading="lazy"
+            class="block aspect-[4/3] h-auto w-full lg:aspect-auto lg:h-[34rem]"
+          ></iframe>
+        </div>
+        <p class="mt-3 text-[0.88rem] text-ink-soft">
+          Întâlnirile se fac cu programare, la birou sau la fața locului, pentru proprietăți.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const video = document.getElementById("hero-video") as HTMLVideoElement | null;
+  const buton = document.getElementById("hero-video-buton") as HTMLButtonElement | null;
+  const miscareRedusa = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // pe conexiuni lente sau cu economizor de date rămâne fotografia
+  const conexiune = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+  const economic = !!conexiune?.saveData || /(^|-)2g$/.test(conexiune?.effectiveType ?? "");
+
+  if (video && buton && !miscareRedusa && !economic) {
+    video.preload = "auto";
+    video.addEventListener(
+      "playing",
+      () => {
+        video.classList.remove("opacity-0");
+        buton.hidden = false;
+      },
+      { once: true },
+    );
+    video.play().catch(() => {
+      /* autoplay blocat: rămâne fotografia */
+    });
+
+    const eticheta = buton.querySelector("span")!;
+    buton.addEventListener("click", () => {
+      const oprit = buton.getAttribute("aria-pressed") === "true";
+      if (oprit) video.play();
+      else video.pause();
+      buton.setAttribute("aria-pressed", String(!oprit));
+      eticheta.textContent = oprit ? "Oprește animația" : "Pornește animația";
+      buton.querySelector('[data-icon="pauza"]')!.toggleAttribute("hidden", !oprit);
+      buton.querySelector('[data-icon="play"]')!.toggleAttribute("hidden", oprit);
+    });
+  }
+</script>

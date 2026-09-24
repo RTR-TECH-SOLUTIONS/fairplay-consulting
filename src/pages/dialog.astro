@@ -1,0 +1,780 @@
+---
+import Layout from "../layouts/Layout.astro";
+import IconWhatsapp from "../components/IconWhatsapp.astro";
+import { site, telLink, waLink, u } from "../data/site";
+
+const domenii = [
+  "Producție",
+  "Servicii",
+  "Comerț",
+  "Agricultură și zootehnie",
+  "Turism și HoReCa",
+  "IT și digital",
+  "Sănătate",
+  "Construcții",
+  "Altul",
+];
+const stadii = ["Doar ideea, fără firmă", "Firmă nouă, sub un an", "Firmă cu activitate de peste un an"];
+const valori = ["sub 50.000 €", "50.000–200.000 €", "200.000 € – 1 mil. €", "peste 1 mil. €", "nu știu încă"];
+const contributii = [
+  "Nu am deloc",
+  "până la 10%",
+  "între 10% și 30%",
+  "peste 30%",
+  "Am o proprietate care poate fi garanție",
+];
+const surseDorite = ["Fonduri nerambursabile", "Credit bancar", "Leasing", "Investitor privat", "Nu știu, recomandați-mi voi"];
+const tipuriProprietate = [
+  "Teren intravilan",
+  "Teren extravilan sau agricol",
+  "Casă sau apartament",
+  "Clădire sau spațiu comercial",
+  "Hală sau spațiu industrial",
+  "Utilaje sau echipamente",
+  "Altceva",
+];
+const acte = ["Carte funciară la zi", "Acte incomplete sau vechi", "Moștenire nefinalizată", "Nu știu"];
+const obiective = [
+  "Vânzare",
+  "Închiriere",
+  "Asociere cu un dezvoltator sau investitor",
+  "Garanție pentru un credit",
+  "Nu știu, vreau o recomandare",
+];
+const preferinte = ["Telefon", "WhatsApp", "E-mail"];
+
+const pasiProgres = ["Situația", "Detalii", "Contact", "Fișa"];
+
+const inputCls =
+  "mt-2 block w-full rounded-[8px] border border-line bg-paper px-4 py-3 text-[1rem] text-ink transition-colors placeholder:text-ink-soft/60 hover:border-mist focus:border-navy-900 focus:outline-none focus:ring-2 focus:ring-gold/40 aria-[invalid=true]:border-[#a2392f]";
+const chipCls =
+  "relative inline-flex cursor-pointer items-center rounded-[8px] border border-line bg-paper px-4 py-2.5 text-[0.95rem] transition-colors hover:border-mist has-[input:checked]:border-navy-900 has-[input:checked]:bg-navy-900 has-[input:checked]:text-white has-[input:focus-visible]:ring-2 has-[input:focus-visible]:ring-gold";
+const labelCls = "block font-medium text-ink";
+const errCls = "mt-2 hidden text-[0.9rem] text-[#a2392f]";
+---
+
+<Layout
+  title="Dialog cu un consultant | Fairplay Business Consulting"
+  description="Spune-ne ce ai: o idee de afacere care caută finanțare sau o proprietate de pus în valoare. Primești o fișă de solicitare și răspunsul unui consultant în două zile lucrătoare."
+  faraBaraMobila
+>
+  <section class="bg-stone-50 py-12 md:py-20">
+    <div class="wrap grid gap-10 lg:grid-cols-12 lg:gap-x-14 lg:gap-y-0">
+      <!-- Introducere -->
+      <div class="lg:col-span-4 lg:row-start-1">
+        <div>
+          <nav aria-label="Breadcrumb" class="text-[0.88rem] text-ink-soft">
+            <a href={u("/")} class="transition-colors hover:text-ink">Acasă</a>
+            <span class="mx-2" aria-hidden="true">/</span>
+            <span aria-current="page" class="text-ink">Dialog</span>
+          </nav>
+          <h1 class="h1 mt-5 text-[clamp(2.2rem,1.7rem+2vw,3.4rem)]">Dialog cu un consultant</h1>
+          <p class="lead mt-5">
+            Câteva întrebări, trei sau patru minute. La final vezi o fișă cu tot ce ne-ai spus: o confirmi sau ne ceri să
+            corectăm ceva.
+          </p>
+        </div>
+      </div>
+
+      <!-- Ce urmează: pe mobil după formular, pe desktop sub introducere -->
+      <div class="order-last lg:order-none lg:col-span-4 lg:row-start-2">
+        <div>
+          <h2 class="font-sans text-[1rem] font-semibold lg:mt-10">Ce urmează</h2>
+          <ol class="mt-4 space-y-4 text-ink-soft">
+            <li class="grid grid-cols-[2rem_1fr]">
+              <span class="num text-[1.3rem] leading-6 text-gold-ink">1</span>
+              <span>Un consultant citește fișa în aceeași zi lucrătoare.</span>
+            </li>
+            <li class="grid grid-cols-[2rem_1fr]">
+              <span class="num text-[1.3rem] leading-6 text-gold-ink">2</span>
+              <span>Te contactează cum preferi tu, în cel mult două zile.</span>
+            </li>
+            <li class="grid grid-cols-[2rem_1fr]">
+              <span class="num text-[1.3rem] leading-6 text-gold-ink">3</span>
+              <span>Primești în scris fișa de eligibilitate, gratuit.</span>
+            </li>
+          </ol>
+
+          <div class="mt-10 border-t border-line pt-6 text-[0.95rem] text-ink-soft">
+            <p>
+              Preferi să vorbim direct? Sună la <a href={telLink} class="link-u text-ink">{site.telefonAfisat}</a> sau{" "}
+              <a
+                href={waLink("Bună ziua, aș dori să discut cu un consultant Fairplay.")}
+                target="_blank"
+                rel="noopener"
+                class="link-u text-ink">scrie-ne pe WhatsApp</a
+              >.
+            </p>
+            <p class="mt-3">Datele rămân la noi și sunt folosite doar pentru acest răspuns.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formularul în pași -->
+      <div class="lg:col-span-8 lg:col-start-5 lg:row-span-2 lg:row-start-1 lg:self-start">
+        <div id="dialog-card" class="card scroll-mt-28 p-6 md:p-10">
+          <div id="progres" class="mb-8">
+            <p class="text-[0.9rem] text-ink-soft" aria-live="polite">
+              <span id="progres-text">Pasul 1 din 4</span>
+            </p>
+            <ol class="mt-3 grid grid-cols-4 gap-2" aria-hidden="true">
+              {
+                pasiProgres.map((p, i) => (
+                  <li data-progres={i + 1} class="group">
+                    <span class="block h-1 rounded-full bg-line transition-colors duration-200 group-data-[stare=activ]:bg-navy-900 group-data-[stare=gata]:bg-gold" />
+                    <span class="mt-2 hidden text-[0.85rem] text-ink-soft group-data-[stare=activ]:text-ink sm:block">{p}</span>
+                  </li>
+                ))
+              }
+            </ol>
+          </div>
+
+          <form id="dialog-form" novalidate>
+            <!-- Pasul 1 -->
+            <section data-pas="1" aria-labelledby="pas1-titlu">
+              <h2 id="pas1-titlu" tabindex="-1" class="h3 focus:outline-none">Cu ce vii la noi?</h2>
+              <p class="mt-2 text-ink-soft">Alege varianta care te descrie. Poți schimba oricând.</p>
+              <fieldset class="mt-6">
+                <legend class="sr-only">Situația ta</legend>
+                <div class="grid gap-4">
+                  {
+                    [
+                      {
+                        v: "idee",
+                        t: "Am o idee de afacere și caut finanțare",
+                        d: "Vreau să pornesc sau să extind o afacere și am nevoie de bani: fonduri, credit, investitor.",
+                      },
+                      {
+                        v: "proprietate",
+                        t: "Am o proprietate sau un bun de pus în valoare",
+                        d: "Am un teren, o clădire, o hală sau utilaje și vreau să obțin cel mai mult din ele.",
+                      },
+                      {
+                        v: "ambele",
+                        t: "Am și o idee, și o proprietate",
+                        d: "De exemplu, un teren pe care vreau să construiesc o afacere finanțată.",
+                      },
+                    ].map((o) => (
+                      <label class="relative flex cursor-pointer gap-4 rounded-[12px] border border-line bg-paper p-5 transition-colors hover:border-mist has-[input:checked]:border-navy-900 has-[input:checked]:bg-stone-50 has-[input:checked]:shadow-[inset_0_0_0_1px_var(--color-navy-900)] has-[input:focus-visible]:ring-2 has-[input:focus-visible]:ring-gold md:p-6">
+                        <input type="radio" name="traseu" value={o.v} required class="peer sr-only" data-eticheta={o.t} />
+                        <span
+                          class="mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full border border-mist bg-paper peer-checked:border-navy-900 peer-checked:[&>span]:bg-navy-900"
+                          aria-hidden="true"
+                        >
+                          <span class="h-2.5 w-2.5 rounded-full" />
+                        </span>
+                        <span>
+                          <span class="block font-serif text-[1.25rem] leading-snug">{o.t}</span>
+                          <span class="mt-1 block text-[0.97rem] text-ink-soft">{o.d}</span>
+                        </span>
+                      </label>
+                    ))
+                  }
+                </div>
+                <p id="traseu-err" class={errCls}>Alege una dintre variante ca să putem continua.</p>
+              </fieldset>
+            </section>
+
+            <!-- Pasul 2 -->
+            <section data-pas="2" hidden aria-labelledby="pas2-titlu">
+              <h2 id="pas2-titlu" tabindex="-1" class="h3 focus:outline-none">Detalii</h2>
+              <p class="mt-2 text-ink-soft">Cu cât ne spui mai precis, cu atât răspunsul nostru e mai util.</p>
+
+              <fieldset data-grup="idee" class="mt-8 grid gap-7" disabled hidden>
+                <legend class="mb-6 w-full border-b border-line pb-3 font-serif text-[1.35rem]">Ideea de afacere</legend>
+
+                <div>
+                  <label for="domeniu" class={labelCls}>Domeniul</label>
+                  <select id="domeniu" name="Domeniul" required class={inputCls} aria-describedby="domeniu-err">
+                    <option value="">Alege domeniul</option>
+                    {domenii.map((d) => <option>{d}</option>)}
+                  </select>
+                  <p id="domeniu-err" class={errCls}>Alege domeniul afacerii.</p>
+                </div>
+
+                <fieldset>
+                  <legend class={labelCls}>În ce stadiu ești?</legend>
+                  <div class="mt-3 flex flex-wrap gap-2">
+                    {
+                      stadii.map((s) => (
+                        <label class={chipCls}>
+                          <input type="radio" name="Stadiul" value={s} required class="sr-only" />
+                          {s}
+                        </label>
+                      ))
+                    }
+                  </div>
+                  <p id="stadiul-err" class={errCls}>Spune-ne în ce stadiu ești.</p>
+                </fieldset>
+
+                <fieldset>
+                  <legend class={labelCls}>Cât ar costa proiectul, cu aproximație?</legend>
+                  <div class="mt-3 flex flex-wrap gap-2">
+                    {
+                      valori.map((v) => (
+                        <label class={chipCls}>
+                          <input type="radio" name="Valoarea estimată" value={v} required class="sr-only" />
+                          {v}
+                        </label>
+                      ))
+                    }
+                  </div>
+                  <p id="valoarea-estimata-err" class={errCls}>Alege un interval, chiar dacă e aproximativ.</p>
+                </fieldset>
+
+                <div>
+                  <label for="contributie" class={labelCls}>Cât poți pune de la tine?</label>
+                  <select id="contributie" name="Contribuția proprie" class={inputCls}>
+                    <option value="">Nu știu încă</option>
+                    {contributii.map((c) => <option>{c}</option>)}
+                  </select>
+                </div>
+
+                <fieldset>
+                  <legend class={labelCls}>La ce surse te-ai gândit? <span class="font-normal text-ink-soft">(opțional, mai multe)</span></legend>
+                  <div class="mt-3 flex flex-wrap gap-2">
+                    {
+                      surseDorite.map((s) => (
+                        <label class={chipCls}>
+                          <input type="checkbox" name="Surse dorite" value={s} class="sr-only" />
+                          {s}
+                        </label>
+                      ))
+                    }
+                  </div>
+                </fieldset>
+
+                <div>
+                  <label for="descriere-idee" class={labelCls}>Descrie ideea în câteva fraze</label>
+                  <textarea
+                    id="descriere-idee"
+                    name="Descrierea ideii"
+                    rows="4"
+                    required
+                    minlength="20"
+                    class={inputCls}
+                    placeholder="De exemplu: vreau să deschid o brutărie artizanală în Florești, am nevoie de cuptor, spațiu și două angajări."
+                    aria-describedby="descriere-idee-err"></textarea>
+                  <p id="descriere-idee-err" class={errCls}>Scrie măcar o frază sau două (minimum 20 de caractere).</p>
+                </div>
+              </fieldset>
+
+              <fieldset data-grup="proprietate" class="mt-8 grid gap-7" disabled hidden>
+                <legend class="mb-6 w-full border-b border-line pb-3 font-serif text-[1.35rem]">Proprietatea sau bunul</legend>
+
+                <div>
+                  <label for="tip-proprietate" class={labelCls}>Ce fel de proprietate?</label>
+                  <select id="tip-proprietate" name="Tipul proprietății" required class={inputCls} aria-describedby="tip-proprietate-err">
+                    <option value="">Alege</option>
+                    {tipuriProprietate.map((t) => <option>{t}</option>)}
+                  </select>
+                  <p id="tip-proprietate-err" class={errCls}>Alege tipul proprietății.</p>
+                </div>
+
+                <div class="grid gap-7 sm:grid-cols-2 sm:gap-5">
+                  <div>
+                    <label for="localitate" class={labelCls}>Localitatea</label>
+                    <input
+                      id="localitate"
+                      name="Localitatea"
+                      type="text"
+                      required
+                      autocomplete="address-level2"
+                      class={inputCls}
+                      placeholder="ex. Florești, jud. Cluj"
+                      aria-describedby="localitate-err"
+                    />
+                    <p id="localitate-err" class={errCls}>Scrie localitatea.</p>
+                  </div>
+                  <div>
+                    <label for="suprafata" class={labelCls}>Suprafața <span class="font-normal text-ink-soft">(opțional)</span></label>
+                    <input id="suprafata" name="Suprafața" type="text" class={inputCls} placeholder="ex. 2.400 mp" />
+                  </div>
+                </div>
+
+                <fieldset>
+                  <legend class={labelCls}>Cum stai cu actele?</legend>
+                  <div class="mt-3 flex flex-wrap gap-2">
+                    {
+                      acte.map((a) => (
+                        <label class={chipCls}>
+                          <input type="radio" name="Situația actelor" value={a} required class="sr-only" />
+                          {a}
+                        </label>
+                      ))
+                    }
+                  </div>
+                  <p id="situatia-actelor-err" class={errCls}>Alege varianta cea mai apropiată. „Nu știu” e un răspuns bun.</p>
+                </fieldset>
+
+                <fieldset>
+                  <legend class={labelCls}>Ce ai vrea să obții?</legend>
+                  <div class="mt-3 flex flex-wrap gap-2">
+                    {
+                      obiective.map((o) => (
+                        <label class={chipCls}>
+                          <input type="checkbox" name="Obiectiv" value={o} class="sr-only" data-minim="1" />
+                          {o}
+                        </label>
+                      ))
+                    }
+                  </div>
+                  <p id="obiectiv-err" class={errCls}>Bifează cel puțin o variantă.</p>
+                </fieldset>
+
+                <div>
+                  <label for="descriere-proprietate" class={labelCls}>Ce ar trebui să mai știm? <span class="font-normal text-ink-soft">(opțional)</span></label>
+                  <textarea
+                    id="descriere-proprietate"
+                    name="Detalii despre proprietate"
+                    rows="3"
+                    class={inputCls}
+                    placeholder="Acces la drum, utilități, PUZ, câți proprietari sunt, de cât timp e nefolosită."></textarea>
+                </div>
+              </fieldset>
+            </section>
+
+            <!-- Pasul 3 -->
+            <section data-pas="3" hidden aria-labelledby="pas3-titlu">
+              <h2 id="pas3-titlu" tabindex="-1" class="h3 focus:outline-none">Cum te contactăm?</h2>
+              <p class="mt-2 text-ink-soft">Un singur consultant se ocupă de solicitarea ta, de la prima discuție până la final.</p>
+
+              <div class="mt-8 grid gap-7">
+                <div>
+                  <label for="nume" class={labelCls}>Nume și prenume</label>
+                  <input id="nume" name="Nume" type="text" required autocomplete="name" class={inputCls} aria-describedby="nume-err" />
+                  <p id="nume-err" class={errCls}>Scrie numele tău.</p>
+                </div>
+                <div class="grid gap-7 sm:grid-cols-2 sm:gap-5">
+                  <div>
+                    <label for="telefon" class={labelCls}>Telefon</label>
+                    <input
+                      id="telefon"
+                      name="Telefon"
+                      type="tel"
+                      required
+                      autocomplete="tel"
+                      inputmode="tel"
+                      class={inputCls}
+                      placeholder="07xx xxx xxx"
+                      aria-describedby="telefon-err"
+                    />
+                    <p id="telefon-err" class={errCls}>Scrie un număr de telefon valid, de exemplu 0741 234 567.</p>
+                  </div>
+                  <div>
+                    <label for="email" class={labelCls}>E-mail <span class="font-normal text-ink-soft">(opțional)</span></label>
+                    <input id="email" name="E-mail" type="email" autocomplete="email" class={inputCls} aria-describedby="email-err" />
+                    <p id="email-err" class={errCls}>Adresa de e-mail nu pare corectă.</p>
+                  </div>
+                </div>
+                <div>
+                  <label for="firma" class={labelCls}>Firma <span class="font-normal text-ink-soft">(dacă ai)</span></label>
+                  <input id="firma" name="Firma" type="text" autocomplete="organization" class={inputCls} />
+                </div>
+                <fieldset>
+                  <legend class={labelCls}>Cum preferi să te contactăm?</legend>
+                  <div class="mt-3 flex flex-wrap gap-2">
+                    {
+                      preferinte.map((p, i) => (
+                        <label class={chipCls}>
+                          <input type="radio" name="Contact preferat" value={p} checked={i === 0} class="sr-only" />
+                          {p}
+                        </label>
+                      ))
+                    }
+                  </div>
+                </fieldset>
+                <div>
+                  <label class="flex cursor-pointer items-start gap-3 text-[0.95rem] text-ink-soft">
+                    <input
+                      id="acord"
+                      type="checkbox"
+                      name="acord"
+                      required
+                      class="mt-1 h-4 w-4 shrink-0 accent-[var(--color-navy-900)]"
+                      aria-describedby="acord-err"
+                    />
+                    <span>Sunt de acord ca Fairplay Business Consulting să mă contacteze în legătură cu această solicitare.</span>
+                  </label>
+                  <p id="acord-err" class={errCls}>Avem nevoie de acordul tău ca să te putem contacta.</p>
+                </div>
+              </div>
+            </section>
+
+            <!-- Pasul 4: fișa -->
+            <section data-pas="4" hidden aria-labelledby="pas4-titlu">
+              <h2 id="pas4-titlu" tabindex="-1" class="h3 focus:outline-none">Verifică fișa de solicitare</h2>
+              <p class="mt-2 text-ink-soft">
+                Așa am înțeles ce ai nevoie. Dacă totul e corect, confirmă. Dacă ceva nu corespunde, cere rectificare.
+              </p>
+
+              <article class="mt-8 rounded-[10px] border border-line bg-stone-50" aria-label="Fișa de solicitare">
+                <header class="flex flex-wrap items-baseline justify-between gap-3 border-b border-line px-5 py-4 md:px-7">
+                  <p class="font-serif text-[1.3rem]">Fișă de solicitare</p>
+                  <p class="num text-[0.95rem] text-ink-soft">
+                    Nr. <span id="fisa-nr" class="text-ink">FP-2026-0000</span> · <span id="fisa-data"></span>
+                  </p>
+                </header>
+                <div id="fisa-continut" class="divide-y divide-line"></div>
+              </article>
+
+              <div id="decizie" class="mt-8 flex flex-wrap gap-3">
+                <button type="button" id="btn-confirm" class="btn btn-primary">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"
+                    ><path d="M3 8.5l3.2 3L13 4.5" stroke="currentColor" stroke-width="1.8"></path></svg
+                  >
+                  Confirm, asta doresc
+                </button>
+                <button type="button" id="btn-rectificare" class="btn btn-ghost" aria-expanded="false" aria-controls="rectificare">
+                  Cer rectificare
+                </button>
+              </div>
+
+              <div id="rectificare" hidden class="mt-6 rounded-[10px] border border-line p-5 md:p-7">
+                <label for="text-rectificare" class={labelCls}>Ce trebuie corectat?</label>
+                <p class="mt-1 text-[0.93rem] text-ink-soft">
+                  Poți modifica direct din butoanele „Modifică” de pe fișă sau ne poți scrie aici ce nu corespunde.
+                </p>
+                <textarea
+                  id="text-rectificare"
+                  rows="3"
+                  class={inputCls}
+                  placeholder="De exemplu: terenul are de fapt doi proprietari, iar suprafața e de 3.100 mp."
+                  aria-describedby="rectificare-err"></textarea>
+                <p id="rectificare-err" class={errCls}>Scrie pe scurt ce trebuie corectat.</p>
+                <div class="mt-5 flex flex-wrap gap-3">
+                  <button type="button" id="btn-trimite-rectificare" class="btn btn-primary">Trimite cu rectificare</button>
+                  <button type="button" id="btn-anuleaza-rectificare" class="btn px-3 text-ink-soft hover:text-ink">Renunț</button>
+                </div>
+              </div>
+            </section>
+
+            <!-- Final -->
+            <section data-pas="5" hidden aria-labelledby="pas5-titlu">
+              <span class="grid h-14 w-14 place-items-center rounded-full bg-navy-900 text-gold" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2"></path></svg>
+              </span>
+              <h2 id="pas5-titlu" tabindex="-1" class="h3 mt-6 focus:outline-none">
+                Solicitarea <span id="final-nr" class="num"></span> a fost înregistrată
+              </h2>
+              <p id="final-text" class="mt-3 max-w-[56ch] text-ink-soft"></p>
+              <p id="final-rectificare" hidden class="mt-4 max-w-[56ch] border-l-2 border-gold pl-4 text-ink-soft"></p>
+              <div class="mt-8 flex flex-wrap gap-3">
+                <a id="final-wa" href="#" target="_blank" rel="noopener" class="btn btn-primary">
+                  <IconWhatsapp />
+                  Trimite fișa și pe WhatsApp
+                </a>
+                <a href={u("/")} class="btn btn-ghost">Înapoi la prima pagină</a>
+              </div>
+            </section>
+
+            <!-- Navigare între pași -->
+            <div id="nav-pasi" class="mt-10 flex items-center justify-between gap-3 border-t border-line pt-6">
+              <button type="button" id="btn-inapoi" class="btn px-3 text-ink-soft hover:text-ink" hidden>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 8H3M7 4L3 8l4 4" stroke="currentColor" stroke-width="1.6"></path></svg>
+                Înapoi
+              </button>
+              <button type="button" id="btn-continua" class="btn btn-primary ml-auto">
+                <span id="btn-continua-text">Continuă</span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6"></path></svg>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script define:vars={{ whatsapp: site.whatsapp }}>
+  window.__fpWhatsapp = whatsapp;
+</script>
+
+<script>
+  // TODO(real): la confirmare, fișa se trimite la backend (Resend pentru e-mail
+  // către consultant sau Supabase pentru istoric). În demo rămâne în browser.
+  const form = document.getElementById("dialog-form") as HTMLFormElement;
+  const card = document.getElementById("dialog-card") as HTMLElement;
+  const pasi = [...form.querySelectorAll<HTMLElement>("[data-pas]")];
+  const grupuri = [...form.querySelectorAll<HTMLFieldSetElement>("[data-grup]")];
+  const btnInapoi = document.getElementById("btn-inapoi") as HTMLButtonElement;
+  const btnContinua = document.getElementById("btn-continua") as HTMLButtonElement;
+  const btnContinuaText = document.getElementById("btn-continua-text") as HTMLElement;
+  const navPasi = document.getElementById("nav-pasi") as HTMLElement;
+  const progres = document.getElementById("progres") as HTMLElement;
+  const progresText = document.getElementById("progres-text") as HTMLElement;
+  const rectificare = document.getElementById("rectificare") as HTMLElement;
+  const btnRectificare = document.getElementById("btn-rectificare") as HTMLButtonElement;
+  const textRectificare = document.getElementById("text-rectificare") as HTMLTextAreaElement;
+
+  const TOTAL = 4;
+  let pasCurent = 1;
+  let revenireLaFisa = false;
+  const nrFisa = `FP-2026-${String(Math.floor(1000 + Math.random() * 9000))}`;
+
+  const traseu = () => (form.querySelector<HTMLInputElement>('input[name="traseu"]:checked')?.value ?? "");
+
+  function actualizeazaGrupuri() {
+    const t = traseu();
+    for (const g of grupuri) {
+      const activ = t === "ambele" || t === g.dataset.grup;
+      g.hidden = !activ;
+      g.disabled = !activ;
+    }
+  }
+
+  function arata(pas: number, focus = true) {
+    pasCurent = pas;
+    for (const s of pasi) s.hidden = Number(s.dataset.pas) !== pas;
+
+    progres.hidden = pas > TOTAL;
+    progresText.textContent = `Pasul ${Math.min(pas, TOTAL)} din ${TOTAL}`;
+    document.querySelectorAll<HTMLElement>("[data-progres]").forEach((el) => {
+      const n = Number(el.dataset.progres);
+      el.dataset.stare = n < pas ? "gata" : n === pas ? "activ" : "";
+    });
+
+    navPasi.hidden = pas >= TOTAL;
+    btnInapoi.hidden = pas === 1;
+    btnContinuaText.textContent = revenireLaFisa ? "Salvează și revino la fișă" : pas === TOTAL - 1 ? "Vezi fișa" : "Continuă";
+
+    if (focus) {
+      const r = card.getBoundingClientRect();
+      if (r.top < 0 || r.top > window.innerHeight * 0.4) card.scrollIntoView({ behavior: "smooth", block: "start" });
+      pasi.find((s) => Number(s.dataset.pas) === pas)?.querySelector<HTMLElement>("h2")?.focus({ preventScroll: true });
+    }
+  }
+
+  // --- validare ---
+  // numele câmpurilor sunt etichetele din fișă („Valoarea estimată”), deci id-ul
+  // mesajului de eroare se face din nume fără diacritice și spații
+  const slug = (s: string) =>
+    s
+      .normalize("NFD")
+      .replace(/[̀-ͯ]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-");
+  const eGrup = (c: HTMLElement) =>
+    c instanceof HTMLInputElement && (c.type === "radio" || (c.type === "checkbox" && !!c.dataset.minim));
+  const idErr = (c: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement) => (eGrup(c) || !c.id ? slug(c.name) : c.id);
+  const mesajEroare = (id: string) => document.getElementById(`${id}-err`);
+
+  // acceptă 07xx xxx xxx, 02xx/03xx fix, cu sau fără +40 / 0040
+  const telefonValid = (v: string) => {
+    const cifre = v.replace(/[^\d+]/g, "").replace(/^\+40|^0040/, "0");
+    return /^0[237]\d{8}$/.test(cifre);
+  };
+
+  function campInvalid(c: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement) {
+    if (c instanceof HTMLTextAreaElement && c.minLength > 0) return c.required && c.value.trim().length < c.minLength;
+    if (c instanceof HTMLInputElement && c.type === "tel") return c.required ? !telefonValid(c.value) : c.value !== "" && !telefonValid(c.value);
+    return !c.checkValidity();
+  }
+
+  function setEroare(camp: HTMLElement, idErr: string, invalid: boolean) {
+    const err = mesajEroare(idErr);
+    if (err) err.classList.toggle("hidden", !invalid);
+    if (camp instanceof HTMLInputElement && (camp.type === "radio" || camp.type === "checkbox") && camp.name !== "acord") return;
+    camp.setAttribute("aria-invalid", String(invalid));
+  }
+
+  function valideazaPas(pas: number) {
+    const sectiune = pasi.find((s) => Number(s.dataset.pas) === pas)!;
+    const campuri = [...sectiune.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>("input, select, textarea")].filter(
+      (c) => !c.disabled && !c.closest("fieldset[disabled]"),
+    );
+    let primul: HTMLElement | null = null;
+    const verificate = new Set<string>();
+
+    for (const c of campuri) {
+      if (eGrup(c)) {
+        if (verificate.has(c.name)) continue;
+        verificate.add(c.name);
+        const grup = campuri.filter((x) => x.name === c.name) as HTMLInputElement[];
+        const obligatoriu = grup.some((x) => x.required || x.dataset.minim);
+        const invalid = obligatoriu && !grup.some((x) => x.checked);
+        setEroare(c, idErr(c), invalid);
+        if (invalid && !primul) primul = c.closest("label") ?? c;
+        continue;
+      }
+      const invalid = campInvalid(c);
+      setEroare(c, idErr(c), invalid);
+      if (invalid && !primul) primul = c;
+    }
+
+    if (primul) {
+      primul.scrollIntoView({ behavior: "smooth", block: "center" });
+      (primul.querySelector?.("input") ?? primul).focus?.({ preventScroll: true });
+      return false;
+    }
+    return true;
+  }
+
+  // curățăm eroarea imediat ce utilizatorul corectează
+  form.addEventListener("input", (e) => {
+    const c = e.target as HTMLInputElement;
+    if (!c.name && !c.id) return;
+    if (c.name === "traseu") actualizeazaGrupuri();
+    const id = idErr(c);
+    const err = mesajEroare(id);
+    if (err && !err.classList.contains("hidden")) {
+      const ok = eGrup(c) ? true : !campInvalid(c);
+      if (ok) setEroare(c, id, false);
+    }
+  });
+
+  // --- fișa ---
+  const esc = (s: string) => s.replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[ch]!);
+
+  function valoriGrup(el: HTMLElement) {
+    const rezultat: [string, string][] = [];
+    const vazute = new Set<string>();
+    el.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>("input, select, textarea").forEach((c) => {
+      if (!c.name || c.name === "traseu" || c.name === "acord" || vazute.has(c.name)) return;
+      if (c instanceof HTMLInputElement && (c.type === "radio" || c.type === "checkbox")) {
+        vazute.add(c.name);
+        const bifate = [...el.querySelectorAll<HTMLInputElement>(`input[name="${CSS.escape(c.name)}"]:checked`)].map((x) => x.value);
+        rezultat.push([c.name, bifate.join(", ")]);
+        return;
+      }
+      vazute.add(c.name);
+      rezultat.push([c.name, c.value.trim()]);
+    });
+    return rezultat;
+  }
+
+  function sectiuneFisa(titlu: string, pas: number, randuri: [string, string][]) {
+    const dl = randuri
+      .map(
+        ([k, v]) =>
+          `<div class="grid gap-1 py-2 sm:grid-cols-[12rem_1fr] sm:gap-4"><dt class="text-[0.92rem] text-ink-soft">${esc(k)}</dt><dd class="${v ? "text-ink" : "text-ink-soft/70"}">${v ? esc(v) : "nespecificat"}</dd></div>`,
+      )
+      .join("");
+    return `<section class="px-5 py-5 md:px-7">
+      <div class="flex items-baseline justify-between gap-4">
+        <h3 class="font-sans text-[1rem] font-semibold">${esc(titlu)}</h3>
+        <button type="button" data-modifica="${pas}" class="link-u text-[0.92rem] font-medium text-navy-900">Modifică</button>
+      </div>
+      <dl class="mt-2">${dl}</dl>
+    </section>`;
+  }
+
+  let traseuPeFisa = "";
+
+  function construiesteFisa() {
+    traseuPeFisa = traseu();
+    const t = form.querySelector<HTMLInputElement>('input[name="traseu"]:checked');
+    const parti = [sectiuneFisa("Situația", 1, [["Cu ce vine clientul", t?.dataset.eticheta ?? ""]])];
+    for (const g of grupuri) {
+      if (g.disabled) continue;
+      parti.push(sectiuneFisa(g.dataset.grup === "idee" ? "Ideea de afacere" : "Proprietatea sau bunul", 2, valoriGrup(g)));
+    }
+    parti.push(sectiuneFisa("Date de contact", 3, valoriGrup(pasi.find((s) => s.dataset.pas === "3")!)));
+
+    document.getElementById("fisa-continut")!.innerHTML = parti.join("");
+    document.getElementById("fisa-nr")!.textContent = nrFisa;
+    document.getElementById("fisa-data")!.textContent = new Date().toLocaleDateString("ro-RO", { day: "numeric", month: "long", year: "numeric" });
+  }
+
+  document.getElementById("fisa-continut")!.addEventListener("click", (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>("[data-modifica]");
+    if (!b) return;
+    revenireLaFisa = true;
+    arata(Number(b.dataset.modifica));
+  });
+
+  // --- navigare ---
+  btnContinua.addEventListener("click", () => {
+    if (!valideazaPas(pasCurent)) return;
+    if (pasCurent === 1) actualizeazaGrupuri();
+    // dacă s-a schimbat traseul de pe fișă, pasul 2 are câmpuri noi de completat
+    if (revenireLaFisa && pasCurent === 1 && traseu() !== traseuPeFisa) {
+      revenireLaFisa = false;
+      arata(2);
+      return;
+    }
+    const urmator = revenireLaFisa ? TOTAL : pasCurent + 1;
+    if (urmator === TOTAL) {
+      revenireLaFisa = false;
+      construiesteFisa();
+    }
+    arata(urmator);
+  });
+
+  btnInapoi.addEventListener("click", () => {
+    revenireLaFisa = false;
+    arata(Math.max(1, pasCurent - 1));
+  });
+
+  // Enter într-un câmp text trece la pasul următor, nu trimite formularul
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (pasCurent < TOTAL) btnContinua.click();
+  });
+
+  // --- decizie: confirmare sau rectificare ---
+  function finalizeaza(cuRectificare: string) {
+    const date = new FormData(form);
+    const nume = String(date.get("Nume") ?? "").split(" ")[0];
+    const pref = String(date.get("Contact preferat") ?? "Telefon");
+    const cum = pref === "E-mail" ? "e-mail" : pref === "WhatsApp" ? "WhatsApp" : "telefon";
+
+    document.getElementById("final-nr")!.textContent = nrFisa;
+    document.getElementById("final-text")!.textContent =
+      `Mulțumim${nume ? ", " + nume : ""}. Un consultant citește fișa azi și te contactează prin ${cum} în cel mult două zile lucrătoare.`;
+
+    const notaRect = document.getElementById("final-rectificare")!;
+    notaRect.hidden = !cuRectificare;
+    if (cuRectificare) notaRect.textContent = `Am notat și ce trebuie corectat: „${cuRectificare.replace(/[.!?\s]+$/, "")}”. Clarificăm la primul telefon.`;
+
+    const text = [...document.querySelectorAll("#fisa-continut > section")]
+      .map((sec) => {
+        const randuri = [...sec.querySelectorAll("dl > div")].map((d) => `${d.querySelector("dt")!.textContent}: ${d.querySelector("dd")!.textContent}`);
+        return `${sec.querySelector("h3")!.textContent}\n${randuri.join("\n")}`;
+      })
+      .join("\n\n");
+    const mesaj = `Fișă de solicitare ${nrFisa}${cuRectificare ? " (cu rectificare)" : ""}\n\n${text.trim()}${cuRectificare ? `\n\nDe corectat: ${cuRectificare}` : ""}`;
+    (document.getElementById("final-wa") as HTMLAnchorElement).href =
+      `https://wa.me/${(window as unknown as { __fpWhatsapp: string }).__fpWhatsapp}?text=${encodeURIComponent(mesaj)}`;
+
+    console.info("[dialog] fișă finalizată", Object.fromEntries(date.entries()), { rectificare: cuRectificare });
+    arata(5);
+  }
+
+  document.getElementById("btn-confirm")!.addEventListener("click", () => finalizeaza(""));
+
+  btnRectificare.addEventListener("click", () => {
+    const deschis = btnRectificare.getAttribute("aria-expanded") === "true";
+    btnRectificare.setAttribute("aria-expanded", String(!deschis));
+    rectificare.hidden = deschis;
+    if (!deschis) textRectificare.focus();
+  });
+
+  document.getElementById("btn-anuleaza-rectificare")!.addEventListener("click", () => {
+    rectificare.hidden = true;
+    btnRectificare.setAttribute("aria-expanded", "false");
+    btnRectificare.focus();
+  });
+
+  document.getElementById("btn-trimite-rectificare")!.addEventListener("click", () => {
+    const t = textRectificare.value.trim();
+    const invalid = t.length < 5;
+    setEroare(textRectificare, "rectificare", invalid);
+    if (invalid) {
+      textRectificare.focus();
+      return;
+    }
+    finalizeaza(t);
+  });
+
+  // --- start: ?traseu=idee | proprietate | ambele preselectează prima alegere ---
+  const dinUrl = new URLSearchParams(location.search).get("traseu");
+  const preselectat = dinUrl ? form.querySelector<HTMLInputElement>(`input[name="traseu"][value="${CSS.escape(dinUrl)}"]`) : null;
+  if (preselectat) {
+    preselectat.checked = true;
+    actualizeazaGrupuri();
+    arata(2, false);
+  } else {
+    arata(1, false);
+  }
+</script>

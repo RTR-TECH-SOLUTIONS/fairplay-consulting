@@ -1,0 +1,29 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { nav, dialogHref } from "../data/site";
+---
+
+<Layout title="Pagina nu există | Fairplay Business Consulting" description="Pagina căutată nu există sau a fost mutată.">
+  <section class="py-24 md:py-32">
+    <div class="wrap max-w-3xl">
+      <p class="num text-[4rem] leading-none text-gold-ink">404</p>
+      <h1 class="h2 mt-6">Pagina asta nu există sau a fost mutată.</h1>
+      <p class="lead mt-5">Poate te ajută una dintre paginile de mai jos.</p>
+      <ul class="mt-10 divide-y divide-line border-y border-line">
+        {
+          nav.map((n) => (
+            <li>
+              <a href={n.href} class="flex items-center justify-between py-4 font-serif text-[1.3rem] transition-colors hover:text-gold-ink">
+                {n.label}
+                <span aria-hidden="true" class="text-ink-soft">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" /></svg>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a href={dialogHref} class="btn btn-primary mt-10">Începe dialogul</a>
+    </div>
+  </section>
+</Layout>

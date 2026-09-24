@@ -1,0 +1,98 @@
+---
+import Logo from "./Logo.astro";
+import { site, nav, dialogHref, telLink, u } from "../data/site";
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const activ = (href: string) => {
+  const curat = href.replace(/\/$/, "") || "/";
+  return !href.includes("#") && (curat === path || (curat === u("") && path === "/"));
+};
+---
+
+<header class="sticky top-0 z-40 border-b border-line/80 bg-paper/95 backdrop-blur">
+  <div class="wrap flex h-[4.5rem] items-center justify-between gap-6 md:h-20">
+    <Logo animat={path === "/" || path === u("")} />
+
+    <nav aria-label="Navigare principală" class="hidden items-center gap-8 lg:flex">
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            aria-current={activ(item.href) ? "page" : undefined}
+            class:list={[
+              "text-[0.95rem] transition-colors hover:text-ink",
+              activ(item.href)
+                ? "text-ink underline decoration-gold decoration-2 underline-offset-[7px]"
+                : "text-ink-soft",
+            ]}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <a href={dialogHref} class="btn btn-primary hidden sm:inline-flex">Începe dialogul</a>
+      <a
+        href={telLink}
+        class="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-line sm:hidden"
+        aria-label={`Sunați la ${site.telefonAfisat}`}
+      >
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
+          ><path
+            d="M6.6 2h2.2c.5 0 .93.34 1.05.83l.8 3.2c.1.42-.04.86-.37 1.13l-1.4 1.16a13.4 13.4 0 0 0 5.8 5.8l1.16-1.4c.27-.33.71-.47 1.13-.37l3.2.8c.49.12.83.55.83 1.05v2.2c0 1.1-.9 2-2 2C10.5 18.4 5.6 13.5 4.6 4c0-1.1.9-2 2-2Z"
+          ></path></svg
+        >
+      </a>
+      <button
+        type="button"
+        id="meniu-buton"
+        class="-mr-1 inline-flex h-11 w-11 items-center justify-center rounded-lg border border-line lg:hidden"
+        aria-expanded="false"
+        aria-controls="meniu-mobil"
+      >
+        <span class="sr-only">Deschide meniul</span>
+        <svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true" fill="none">
+          <path d="M0 1h20M0 7h20M0 13h20" stroke="currentColor" stroke-width="1.5"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="meniu-mobil" hidden class="border-t border-line bg-paper lg:hidden">
+    <nav aria-label="Navigare mobilă" class="wrap flex flex-col py-2">
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            aria-current={activ(item.href) ? "page" : undefined}
+            class="border-b border-line/70 py-3.5 text-[1.05rem] last:border-0"
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <a href={dialogHref} class="btn btn-primary my-4">Începe dialogul</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const buton = document.getElementById("meniu-buton");
+  const meniu = document.getElementById("meniu-mobil");
+
+  buton?.addEventListener("click", () => {
+    const deschis = buton.getAttribute("aria-expanded") === "true";
+    buton.setAttribute("aria-expanded", String(!deschis));
+    if (meniu) meniu.hidden = deschis;
+  });
+
+  // linkul „Contact” duce la o ancoră: închidem meniul după click
+  meniu?.addEventListener("click", (e) => {
+    if ((e.target as HTMLElement).closest("a") && buton) {
+      buton.setAttribute("aria-expanded", "false");
+      meniu.hidden = true;
+    }
+  });
+</script>

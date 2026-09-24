@@ -1,0 +1,140 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { proiecte } from "../data/proiecte";
+import { u } from "../data/site";
+
+const cuPoveste = proiecte.filter((p) => p.poveste && p.imagine);
+const alt: Record<string, string> = {
+  "/images/sat-transilvania.webp": "Sat din Transilvania cu case vechi și acoperișuri de țiglă, pe un deal împădurit",
+  "/images/macheta.webp": "Machetă de arhitectură cu clădiri joase și copaci",
+};
+
+const chip =
+  "inline-flex items-center rounded-[8px] border px-4 py-2 text-[0.93rem] transition-colors aria-pressed:border-navy-900 aria-pressed:bg-navy-900 aria-pressed:text-white border-line bg-paper hover:border-mist";
+---
+
+<Layout
+  title="Proiecte de succes | Finanțări obținute și proprietăți valorificate | Fairplay"
+  description="Pensiuni finanțate prin AFIR, ateliere pe Programul Regional Nord-Vest, terenuri din Florești valorificate prin asociere cu dezvoltatori. Proiecte din județul Cluj."
+>
+  <PageHero
+    pagina="Proiecte"
+    titlu="Proiecte de succes"
+    text="Ce am obținut pentru clienți în ultimii ani, în finanțare și în valorificarea proprietăților. Beneficiarii apar cu acordul lor, fără nume."
+    imagine="/images/strada-cluj.webp"
+  />
+
+  <!-- Două povești -->
+  <section class="py-20 md:py-28" aria-label="Două proiecte pe larg">
+    <div class="wrap grid gap-16">
+      {
+        cuPoveste.map((p, i) => (
+          <article class="grid items-center gap-8 lg:grid-cols-12 lg:gap-14">
+            <img
+              src={u(p.imagine!)}
+              alt={alt[p.imagine!] ?? ""}
+              width="1400"
+              height="1050"
+              loading="lazy"
+              class:list={["aspect-[4/3] w-full rounded-[12px] object-cover lg:col-span-6", i % 2 === 1 && "lg:order-2"]}
+            />
+            <div class:list={["lg:col-span-6", i % 2 === 1 && "lg:order-1"]}>
+              <p class="text-[0.92rem] text-gold-ink">
+                {p.traseu === "finantare" ? "Finanțare" : "Valorificare"} · {p.localitate} · {p.an}
+              </p>
+              <h2 class="h2 mt-3">{p.titlu}</h2>
+              <p class="lead mt-5">{p.poveste}</p>
+              <dl class="mt-8 grid grid-cols-2 gap-6 border-t border-line pt-6">
+                <div>
+                  <dt class="text-[0.88rem] text-ink-soft">Sursă sau soluție</dt>
+                  <dd class="mt-1 font-medium">{p.sursa}</dd>
+                </div>
+                <div>
+                  <dt class="text-[0.88rem] text-ink-soft">Rezultat</dt>
+                  <dd class="num mt-1 text-[1.35rem] leading-snug text-navy-900">{p.rezultat}</dd>
+                </div>
+              </dl>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Registrul proiectelor -->
+  <section class="border-t border-line bg-stone-50 py-20 md:py-28" aria-labelledby="registru-titlu">
+    <div class="wrap">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <span class="rule-gold"></span>
+          <h2 id="registru-titlu" class="h2 mt-6">Toate proiectele</h2>
+        </div>
+        <div role="group" aria-label="Filtrează proiectele" class="flex flex-wrap gap-2">
+          <button type="button" class={chip} data-traseu="" aria-pressed="true">Toate</button>
+          <button type="button" class={chip} data-traseu="finantare" aria-pressed="false">Finanțare</button>
+          <button type="button" class={chip} data-traseu="valorificare" aria-pressed="false">Valorificare</button>
+        </div>
+      </div>
+
+      <div class="mt-10 overflow-hidden rounded-[12px] border border-line bg-paper">
+        <table class="w-full text-left text-[0.97rem]">
+          <caption class="sr-only">Registrul proiectelor, cu sursa, rezultatul, anul și stadiul</caption>
+          <thead class="hidden bg-stone-50 text-[0.88rem] text-ink-soft md:table-header-group">
+            <tr>
+              <th scope="col" class="px-6 py-4 font-medium">Proiect</th>
+              <th scope="col" class="px-6 py-4 font-medium">Sursă sau soluție</th>
+              <th scope="col" class="px-6 py-4 font-medium">Rezultat</th>
+              <th scope="col" class="px-6 py-4 font-medium">An</th>
+              <th scope="col" class="px-6 py-4 font-medium">Stadiu</th>
+            </tr>
+          </thead>
+          <tbody id="registru" class="divide-y divide-line">
+            {
+              proiecte.map((p) => (
+                <tr data-traseu={p.traseu} class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 px-5 py-5 md:table-row md:p-0">
+                  <th scope="row" class="col-span-2 font-normal md:px-6 md:py-5">
+                    <span class="block font-serif text-[1.18rem] text-ink">{p.titlu}</span>
+                    <span class="text-[0.9rem] text-ink-soft">{p.localitate}</span>
+                  </th>
+                  <td class="col-span-2 text-ink-soft md:px-6 md:py-5">{p.sursa}</td>
+                  <td class="col-span-2 font-medium text-ink md:px-6 md:py-5">{p.rezultat}</td>
+                  <td class="num text-ink-soft md:px-6 md:py-5">{p.an}</td>
+                  <td class="md:px-6 md:py-5">
+                    <span class="inline-flex items-center gap-2 text-[0.92rem] text-ink-soft">
+                      <span class:list={["h-1.5 w-1.5 rounded-full", p.stadiu.startsWith("În") ? "bg-mist" : "bg-gold"]} aria-hidden="true" />
+                      {p.stadiu}
+                    </span>
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-4 text-[0.9rem] text-ink-soft" aria-live="polite"><span id="nr-proiecte">{proiecte.length}</span> proiecte afișate</p>
+    </div>
+  </section>
+
+  <CtaBand titlu="Următorul proiect poate fi al tău." />
+</Layout>
+
+<script>
+  const butoane = [...document.querySelectorAll<HTMLButtonElement>("[data-traseu]:not(tr)")];
+  const randuri = [...document.querySelectorAll<HTMLTableRowElement>("#registru > tr")];
+  const nr = document.getElementById("nr-proiecte")!;
+
+  for (const b of butoane) {
+    b.addEventListener("click", () => {
+      const t = b.dataset.traseu;
+      let vizibile = 0;
+      for (const r of randuri) {
+        r.hidden = !!t && r.dataset.traseu !== t;
+        if (!r.hidden) vizibile++;
+      }
+      nr.textContent = String(vizibile);
+      for (const x of butoane) x.setAttribute("aria-pressed", String(x === b));
+    });
+  }
+</script>

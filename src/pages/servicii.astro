@@ -1,0 +1,208 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { dialogHref, u } from "../data/site";
+
+const directii = [
+  {
+    id: "finantare",
+    titlu: "Finanțare pentru idei și afaceri",
+    intro:
+      "Pentru cine are o idee și nu știe de unde să ia banii, și pentru firmele care vor să crească. Pornim de la proiect, nu de la program: întâi vedem ce vrei să faci, apoi căutăm sursa care se potrivește.",
+    img: "/images/calculator.webp",
+    w: 1400,
+    h: 933,
+    alt: "Calculator de birou, foarfecă și ruletă pe un birou cu hârtii",
+    traseu: "idee",
+    pasi: [
+      ["Analiza ideii", "Verificăm dacă ideea stă în picioare: piață, costuri, cine sunt clienții, cât durează până aduce bani."],
+      ["Alegerea sursei", "Nerambursabil, credit, leasing, investitor privat sau o combinație. Îți arătăm în scris avantajele și costul fiecăreia."],
+      ["Planul de afaceri", "Scris pe grila finanțatorului, cu proiecții financiare pe care le poți susține la interviu sau la bancă."],
+      ["Dosarul și depunerea", "Cererea de finanțare, bugetul, ofertele de preț, anexele. Depunem noi, pe platforma finanțatorului."],
+      ["Implementarea", "Achiziții, cereri de plată și de rambursare, raportări, vizite de monitorizare."],
+    ],
+    primesti: [
+      "fișa de eligibilitate, gratuit, înainte de orice contract",
+      "planul de afaceri și bugetul, în format editabil",
+      "calendarul proiectului, cu fiecare termen de depunere și raportare",
+      "un consultant care răspunde la telefon pe toată durata proiectului",
+    ],
+    durata: [
+      ["Fișa de eligibilitate", "3–5 zile lucrătoare"],
+      ["Dosar nerambursabil", "3–6 săptămâni"],
+      ["Dosar de credit", "1–2 săptămâni"],
+      ["Pregătire pentru investitori", "4–8 săptămâni"],
+    ],
+  },
+  {
+    id: "valorificare",
+    titlu: "Valorificarea proprietăților și bunurilor",
+    intro:
+      "Pentru terenuri, case, clădiri, hale și utilaje care stau nefolosite sau aduc mai puțin decât ar putea. De cele mai multe ori, problema nu e proprietatea, ci actele și lipsa unui plan.",
+    img: "/images/hala-caramida.webp",
+    w: 1400,
+    h: 2100,
+    alt: "Stâlpi de cărămidă într-o hală veche, cu lumină care cade pieziș",
+    traseu: "proprietate",
+    pasi: [
+      ["Verificarea actelor", "Extras de carte funciară, cadastru, sarcini, succesiuni, certificat de urbanism. Aflăm ce se poate face legal cu proprietatea."],
+      ["Evaluarea", "Estimăm valoarea de piață, iar pentru bănci și tranzacții mari lucrăm cu evaluatori autorizați ANEVAR."],
+      ["Planul de valorificare", "Comparăm în cifre vânzarea, închirierea, asocierea cu un dezvoltator sau folosirea ca garanție."],
+      ["Dosarul de prezentare", "Fotografii, planuri, acte, cifre: tot ce vrea să vadă un cumpărător sau un investitor serios."],
+      ["Negocierea și semnarea", "Căutăm activ partenerul, negociem condițiile și coordonăm notarul și avocatul până la semnare."],
+    ],
+    primesti: [
+      "un raport scurt despre situația juridică a proprietății",
+      "o estimare de valoare și comparația variantelor, în lei și în ani",
+      "dosarul de prezentare, gata de trimis",
+      "reprezentare la negociere, dacă vrei",
+    ],
+    durata: [
+      ["Verificarea actelor", "1–2 săptămâni"],
+      ["Planul de valorificare", "2–3 săptămâni"],
+      ["Vânzare sau închiriere", "3–9 luni, după piață"],
+      ["Asociere cu dezvoltator", "6–12 luni până la contract"],
+    ],
+  },
+];
+
+// TODO(real): modelul de onorariu e cel uzual în nișă; de confirmat cu clientul.
+const onorariu = [
+  ["Gratuit", "Discuția inițială și fișa de eligibilitate. Afli dacă merită înainte să plătești ceva."],
+  ["Onorariu fix", "Pentru planul de afaceri, dosarul de finanțare sau dosarul de prezentare al proprietății. Îl știi din contract."],
+  ["Procent de succes", "Doar dacă finanțarea se aprobă sau tranzacția se semnează. Dacă nu iese, nu plătești această parte."],
+];
+
+const parteneri = [
+  "evaluatori autorizați ANEVAR",
+  "notari publici din Cluj-Napoca",
+  "avocați specializați în imobiliare și societăți",
+  "ingineri topografi și cadastru",
+  "arhitecți și proiectanți, pentru PUZ și autorizații",
+  "bănci și firme de leasing din Cluj",
+];
+---
+
+<Layout
+  title="Servicii | Finanțare pentru afaceri și valorificarea proprietăților | Fairplay"
+  description="Planuri de afaceri, dosare de finanțare, credit și investitori pentru idei de afaceri. Verificarea actelor, evaluare și planuri de valorificare pentru terenuri și clădiri, în Cluj."
+>
+  <PageHero
+    pagina="Servicii"
+    titlu="Servicii de consultanță"
+    text="Două direcții care se întâlnesc des: bani pentru o idee și valoare din ce deții deja. Le poți folosi separat sau împreună."
+    imagine="/images/sala-conferinte.webp"
+  >
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a href="#finantare" class="btn btn-gold">Finanțare</a>
+      <a href="#valorificare" class="btn btn-ghost-light">Valorificare</a>
+    </div>
+  </PageHero>
+
+  {
+    directii.map((d, idx) => (
+      <section id={d.id} class:list={["scroll-mt-24 py-20 md:py-28", idx % 2 === 1 && "bg-stone-50"]} aria-labelledby={`${d.id}-titlu`}>
+        <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-14">
+          <div class:list={["lg:col-span-5", idx % 2 === 1 && "lg:order-2 lg:col-start-8"]}>
+            <div class="lg:sticky lg:top-32">
+              <img
+                src={u(d.img)}
+                alt={d.alt}
+                width={d.w}
+                height={d.h}
+                loading="lazy"
+                class:list={["w-full rounded-[12px] object-cover", d.h > d.w ? "aspect-[4/5]" : "aspect-[4/3]"]}
+              />
+              <div class="mt-8 rounded-[12px] border border-line bg-paper p-6">
+                <h3 class="font-sans text-[1rem] font-semibold">Durată orientativă</h3>
+                <dl class="mt-3 divide-y divide-line text-[0.97rem]">
+                  {d.durata.map(([k, v]) => (
+                    <div class="flex justify-between gap-4 py-2.5">
+                      <dt class="text-ink-soft">{k}</dt>
+                      <dd class="text-right font-medium">{v}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            </div>
+          </div>
+
+          <div class:list={["lg:col-span-7", idx % 2 === 1 && "lg:order-1 lg:col-start-1"]}>
+            <span class="rule-gold" />
+            <h2 id={`${d.id}-titlu`} class="h2 mt-6">
+              {d.titlu}
+            </h2>
+            <p class="lead mt-5">{d.intro}</p>
+
+            <ol class="mt-10 border-t border-line">
+              {d.pasi.map(([t, text], i) => (
+                <li class="grid grid-cols-[3rem_1fr] gap-3 border-b border-line py-6">
+                  <span class="num text-[1.6rem] leading-none text-gold-ink">{String(i + 1).padStart(2, "0")}</span>
+                  <div>
+                    <h3 class="font-serif text-[1.3rem] leading-snug">{t}</h3>
+                    <p class="mt-1.5 text-ink-soft">{text}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+
+            <h3 class="mt-10 font-sans text-[1rem] font-semibold">Ce primești</h3>
+            <ul class="check-list mt-4 text-ink-soft">
+              {d.primesti.map((p) => (
+                <li>{p}</li>
+              ))}
+            </ul>
+
+            <a href={`${dialogHref}?traseu=${d.traseu}`} class="btn btn-primary mt-10">
+              Începe dialogul pentru {d.traseu === "idee" ? "ideea ta" : "proprietatea ta"}
+            </a>
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <!-- Onorariu -->
+  <section class="bg-navy-900 py-20 text-white md:py-28" aria-labelledby="onorariu-titlu">
+    <div class="wrap">
+      <div class="max-w-2xl">
+        <span class="rule-gold"></span>
+        <h2 id="onorariu-titlu" class="h2 mt-6">Cum se plătește</h2>
+        <p class="mt-5 text-[1.1rem] text-mist">Fără abonamente și fără costuri ascunse. Totul e scris în contract înainte să începem.</p>
+      </div>
+      <div class="mt-12 grid gap-px overflow-hidden rounded-[12px] border border-white/10 bg-white/10 md:grid-cols-3">
+        {
+          onorariu.map(([t, text]) => (
+            <div class="bg-navy-900 p-7 md:p-9">
+              <h3 class="h3 text-gold-300">{t}</h3>
+              <p class="mt-3 text-mist">{text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Parteneri -->
+  <section class="py-20 md:py-28" aria-labelledby="parteneri-titlu">
+    <div class="wrap grid gap-10 lg:grid-cols-12">
+      <div class="lg:col-span-5">
+        <span class="rule-gold"></span>
+        <h2 id="parteneri-titlu" class="h2 mt-6">Cu cine lucrăm</h2>
+        <p class="lead mt-5">
+          Nu facem totul singuri. Pentru fiecare dosar aducem specialistul potrivit, iar tu vorbești cu un singur om.
+        </p>
+      </div>
+      <ul class="grid gap-x-10 sm:grid-cols-2 lg:col-span-6 lg:col-start-7">
+        {
+          parteneri.map((p) => (
+            <li class="border-b border-line py-4 font-serif text-[1.2rem]">{p}</li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand />
+</Layout>
